@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Controle de Despesas</title>
+
+  <link rel="stylesheet" href="despesas.css" />
+
+  <!-- Chart.js (Gráficos) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__left">
+    <h1>Controle de Despesas</h1>
+    <div id="infoUsuario" class="muted" style="font-size:13px; margin-top:2px;">
+      <!-- preenchido via JS -->
+    </div>
+  </div>
+
+  <div class="topbar__actions" style="display:flex; gap:10px; align-items:center;">
+    <button id="btnTema" class="btn btn--ghost" type="button" title="Alternar tema">
+      Tema
+    </button>
+
+    <a id="btnUsuarios" class="btn btn--ghost" href="usuarios.html"
+       style="text-decoration:none; display:none; align-items:center; justify-content:center;">
+      Usuários
+    </a>
+
+    <button id="btnSair" class="btn btn--ghost" type="button">Sair</button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="grid">
+
+    <!-- COLUNA ESQUERDA -->
+    <aside class="col col--left">
+      <section class="card">
+        <h2 class="card__title">➕ Nova despesa</h2>
+
+        <form id="formDespesa" class="form">
+          <div class="row">
+            <div class="field">
+              <label>Data</label>
+              <input id="data" type="date" required />
+            </div>
+
+            <div class="field">
+              <label>Valor (R$)</label>
+              <input id="valor" type="text" inputmode="decimal" placeholder="0,00" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Responsável</label>
+            <select id="responsavel" required>
+              <option value="">Selecione ou cadastre um responsável</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Categoria</label>
+            <select id="categoria" required>
+              <option value="">Selecione a categoria</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Descrição (opcional)</label>
+            <input id="descricao" type="text" placeholder="Descrição da despesa" />
+          </div>
+
+          <div class="field">
+            <label>Local</label>
+            <select id="local" required>
+              <option value="">Selecione o local</option>
+            </select>
+          </div>
+
+          <button class="btn btn--primary btn--full" id="btnSalvarDespesa" type="submit">
+            Salvar despesa
+          </button>
+
+          <button class="btn btn--ghost btn--full" id="btnCancelarEdicao" type="button" style="display:none;">
+            Cancelar edição
+          </button>
+
+          <p id="msgDespesa" class="msg" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">Última despesa incluída neste exercício:</h2>
+        <div id="ultimaDespesa" class="muted">
+          Nenhuma despesa cadastrada neste exercício.
+        </div>
+      </section>
+    </aside>
+
+    <!-- COLUNA DIREITA -->
+    <section class="col col--right">
+
+      <!-- RESUMO -->
+      <section class="card">
+        <h2 class="card__title">📅 Resumo por exercício</h2>
+        <div class="muted" id="linhaResumo">
+          Exercício: <b id="exercicioLabel">2025</b> &nbsp; | &nbsp;
+          Ano: <b id="anoLabel">2025</b> &nbsp; | &nbsp;
+          Total no ano: <b id="totalAnoLabel">R$ 0,00</b> &nbsp; | &nbsp;
+          Qtd: <b id="qtdAnoLabel">0</b>
+        </div>
+
+        <div id="gridMeses" class="months"></div>
+
+        <div class="tip muted">
+          Dica: clique em um mês para aplicar o filtro do relatório automaticamente.
+        </div>
+      </section>
+
+      <!-- GRÁFICOS -->
+      <section class="card">
+        <h2 class="card__title">📈 Gráficos</h2>
+
+        <div class="chartsGrid">
+          <div class="chartBox">
+            <h3 class="subTitle">Total por mês</h3>
+            <canvas id="chartMeses" height="120"></canvas>
+          </div>
+
+          <div class="chartBox">
+            <h3 class="subTitle">Gastos por categoria</h3>
+            <canvas id="chartCategorias" height="120"></canvas>
+          </div>
+
+          <div class="chartBox">
+            <h3 class="subTitle">Gastos por responsável</h3>
+            <canvas id="chartResponsaveis" height="120"></canvas>
+          </div>
+        </div>
+
+        <div class="tip muted">
+          Os gráficos usam o ano selecionado e respeitam o filtro de mês quando ele estiver selecionado.
+        </div>
+      </section>
+
+      <!-- RELATÓRIOS -->
+      <section class="card">
+        <h2 class="card__title">📊 Relatórios</h2>
+
+        <div class="filters">
+          <div class="field field--mini">
+            <label>Filtrar por mês</label>
+            <select id="filtroMes">
+              <option value="">Todos</option>
+              <option value="1">Jan</option>
+              <option value="2">Fev</option>
+              <option value="3">Mar</option>
+              <option value="4">Abr</option>
+              <option value="5">Mai</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Ago</option>
+              <option value="9">Set</option>
+              <option value="10">Out</option>
+              <option value="11">Nov</option>
+              <option value="12">Dez</option>
+            </select>
+          </div>
+
+          <div class="field field--mini">
+            <label>Ano</label>
+            <select id="filtroAno"></select>
+          </div>
+
+          <button id="btnFiltrar" class="btn btn--primary" type="button">Filtrar</button>
+
+          <button id="btnCsv" class="btn btn--ghost" type="button">CSV</button>
+          <button id="btnPdf" class="btn btn--ghost" type="button">PDF</button>
+        </div>
+
+        <div class="total">
+          Total: <b id="totalFiltro">R$ 0,00</b>
+        </div>
+
+        <div class="tableWrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Categoria</th>
+                <th>Descrição</th>
+                <th>Local</th>
+                <th>Responsável</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyRelatorio">
+              <tr>
+                <td colspan="7" class="muted">
+                  Sem registros para o filtro selecionado.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CADASTROS -->
+      <section class="card">
+        <h2 class="card__title">⚙️ Cadastros auxiliares</h2>
+
+        <div class="triple">
+          <form id="formResp" class="miniForm">
+            <label>Cadastrar novo responsável</label>
+            <input id="novoResp" type="text" placeholder="Nome" required />
+            <button class="btn btn--primary btn--full" type="submit">Cadastrar</button>
+          </form>
+
+          <form id="formCat" class="miniForm">
+            <label>Cadastrar nova categoria</label>
+            <input id="novaCat" type="text" placeholder="Nome" required />
+            <button class="btn btn--primary btn--full" type="submit">Cadastrar</button>
+          </form>
+
+          <form id="formLocal" class="miniForm">
+            <label>Cadastrar novo local</label>
+            <input id="novoLocal" type="text" placeholder="Nome" required />
+            <button class="btn btn--primary btn--full" type="submit">Cadastrar</button>
+          </form>
+        </div>
+
+        <h3 class="subTitle">Responsáveis cadastrados</h3>
+        <div class="list" id="listaResponsaveis">
+          <div class="muted">Nenhum responsável cadastrado ainda.</div>
+        </div>
+
+        <h3 class="subTitle">Categorias cadastradas</h3>
+        <div class="list" id="listaCategorias">
+          <div class="muted">Nenhuma categoria cadastrada ainda.</div>
+        </div>
+
+        <h3 class="subTitle">Locais cadastrados</h3>
+        <div class="list" id="listaLocais">
+          <div class="muted">Nenhum local cadastrado ainda.</div>
+        </div>
+      </section>
+
+    </section>
+  </div>
+</main>
+
+<!-- jsPDF (PDF) -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Seu JS -->
+<script src="despesas.js"></script>
+</body>
+</html>

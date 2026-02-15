@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Usuários - Controle de Despesas</title>
+  <link rel="stylesheet" href="despesas.css" />
+</head>
+<body>
+
+<header class="topbar">
+
+<button id="btnTema" class="btn btn--ghost" type="button" title="Alternar tema">
+  Tema
+</button>
+
+
+  <div class="topbar__left">
+    <h1>Cadastro de Usuários</h1>
+  </div>
+
+  <div style="display:flex; gap:10px;">
+    <a class="btn btn--ghost" href="despesas.html" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">
+      Voltar
+    </a>
+    <button id="btnSair" class="btn btn--ghost" type="button">Sair</button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="grid" style="grid-template-columns: 520px 1fr;">
+
+    <section class="card">
+      <h2 class="card__title">➕ Novo usuário</h2>
+
+      <form id="formUser" class="form">
+        <div class="field">
+          <label>Nome</label>
+          <input id="nome" type="text" placeholder="Nome completo" required />
+        </div>
+
+        <div class="field">
+          <label>E-mail</label>
+          <input id="email" type="email" placeholder="email@dominio.com" required />
+        </div>
+
+        <div class="field">
+          <label>Senha</label>
+          <input id="password" type="password" placeholder="mínimo 4 caracteres" required />
+        </div>
+
+        <div class="field">
+          <label>Perfil</label>
+          <select id="role" required>
+            <option value="user">Usuário</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <button class="btn btn--primary btn--full" type="submit">Cadastrar usuário</button>
+        <p id="msg" class="msg" aria-live="polite"></p>
+      </form>
+
+      <div class="tip muted" style="margin-top:10px;">
+        Observação: somente usuários com perfil <b>admin</b> conseguem acessar esta tela e cadastrar novos usuários.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">👥 Usuários cadastrados</h2>
+
+      <div class="list" id="listaUsers">
+        <div class="muted">Carregando...</div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script src="usuarios.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Controle de Despesas</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="card" aria-label="Área de login">
+      <div class="card__inner">
+        <img class="logo" src="athos.png" alt="Logo ATHOS" />
+
+        <h1 class="title">Controle de Despesas</h1>
+
+        <form id="loginForm" class="form" autocomplete="on" novalidate>
+          <div class="field">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="E-mail"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Senha"
+              autocomplete="current-password"
+              required
+              minlength="4"
+            />
+          </div>
+
+          <button class="btn" type="submit">Entrar</button>
+
+          <p id="msg" class="msg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>

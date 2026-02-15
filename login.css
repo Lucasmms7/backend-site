@@ -1,0 +1,128 @@
+:root{
+  --bg: #eaf3fc;
+  --card: #f5faff;
+  --inner: #ffffff;
+  --border: #dce6f2;
+  --field-bg: #eef5ff;
+  --field-border: #cddcf0;
+  --text: #141e2d;
+  --muted: #7a8aa1;
+  --blue: #2563eb;
+  --blue2: #1d4ed8;
+
+  --radius: 22px;
+  --radius2: 18px;
+  --shadow: 0 24px 55px rgba(0,0,0,.25);
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.page{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding: 32px 16px;
+}
+
+.card{
+  width: min(520px, 92vw);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 38px;
+}
+
+.card__inner{
+  background: var(--inner);
+  border-radius: var(--radius2);
+  padding: 26px 22px 26px;
+}
+
+.logo{
+  display:block;
+  width: min(320px, 85%);
+  height:auto;
+  margin: 6px auto 18px;
+  opacity: .95;
+}
+
+.title{
+  margin: 0 0 26px;
+  text-align:center;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #0f1b2b;
+}
+
+.form{
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+.field input{
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 2px solid var(--field-border);
+  background: var(--field-bg);
+  outline: none;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.field input::placeholder{
+  color: var(--muted);
+}
+
+.field input:focus{
+  border-color: rgba(37,99,235,.65);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+}
+
+.btn{
+  margin-top: 8px;
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .05s ease, filter .15s ease;
+}
+
+.btn:hover{ filter: brightness(1.02); }
+.btn:active{ transform: translateY(1px); }
+.btn:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.18);
+}
+
+.msg{
+  margin: 2px 0 0;
+  min-height: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.msg--error{ color: #b91c1c; }
+.msg--ok{ color: #0f766e; }
+
+@media (max-width: 420px){
+  .card{ padding: 24px; }
+  .title{ font-size: 22px; }
+}
