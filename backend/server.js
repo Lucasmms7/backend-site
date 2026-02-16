@@ -9,6 +9,9 @@ const { auth } = require("./middlewareAuth");
 
 const app = express();
 app.use(express.json());
+app.get("/", (req, res) => {
+  res.send("Backend online 🚀");
+});
 
 // Libera o front (Live Server)
 app.use(cors({ origin: true, credentials: true }));
@@ -290,7 +293,10 @@ app.delete("/api/despesas/:id", auth, async (req, res) => {
 
 // ====== START ======
 init().then(() => {
-  app.listen(process.env.PORT || 3000, () => {
-    console.log(`✅ Backend rodando em http://localhost:${process.env.PORT || 3000}`);
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`✅ Backend rodando na porta ${PORT}`);
   });
 });
+
